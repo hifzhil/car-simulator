@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="firefighter">
+
+  <!-- my name is Mevi-->  
+  <!-- body dimensions -->
+  <xacro:property name="body_length" value="1.540" />
+  <xacro:property name="body_width" value="0.750" />
+  <xacro:property name="body_height" value="1.4" />
+  <xacro:property name="body_volume" value="${body_length*body_width*body_height}"/>
+  <!-- wheel dimensions -->
+  <xacro:property name="wheel_radius" value="0.185" />
+  <xacro:property name="wheel_width" value="0.125" />
+  <xacro:property name="wheel_volume" value="${pi_const*wheel_radius*wheel_radius*wheel_width}"/>
+
+  <!-- variable -->
+
+  <!-- aluminium density is 2.7 g/cm³ or 2700 kg/m3-->
+  <xacro:property name="body_density" value="2700.0" />
+  <!-- density of all tyre brands is nearly the same which is around 1.1 gr/cm3 or 1100 kg/m3 -->
+  <xacro:property name="wheel_density" value="1100.0" />
+
+  <!-- constant -->
+  <xacro:property name="pi_const" value="3.14159265" />
+  <xacro:property name="pi2_const" value="1.570795" />
+
+  <!-- fixed transformation 
+       this value on rad. 1.570795 is a phi/2
+  -->
+  <xacro:property name="wheel_cylindrical_transform" value="1.570795" />
+
+
+  <!-- mass -->
+  <!-- let assume the mass of box same as half aluminium at it size-->
+  <xacro:property name="body_mass" value="${body_density*body_volume*(1/2)}"/>
+  <xacro:property name="wheel_mass" value="${wheel_density*wheel_volume}"/>
+
+  <!-- moment inertia of wheel -->
+  <!-- let we assume the wheel is a full cylinder, so
+      I_z is inertia with respect to the rotational axis (z)
+      I is inertia with respect to the x and y axis
+      I_z = 1/2*(mr2)
+      I = 1/4*(mr2) + 1/12*(ml2)
+  -->
+  <xacro:property name="Iz_wheel" value="${0.5*wheel_mass*wheel_radius*wheel_radius}"/>
+  <xacro:property name="I_wheel" value="${1/12*wheel_mass*(3*wheel_radius*wheel_radius + wheel_width*wheel_width)}"/>
+
+
+  <!-- this is macro that we can call it anywhere on code
+      it defines all inertia component on the wheel
+  -->
+  <xacro:macro name="inertia_of_wheel">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${I_wheel}"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="${I_wheel}"
+        iyz="0.0"
+        izz="${Iz_wheel}"
+      />
+    </inertial>
+  </xacro:macro>
+
+  <!-- Include the gazebo file -->
+  <xacro:include filename="$(find spawn_car)/urdf/mevi.gazebo"/>
+
+
+  <!-- create a world joint and link in the simmulations -->
+  <link name="dummy">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </link> 
+  
+
+  <xacro:property name="gnd_clearance" value="0.06"/>
+  <joint name="dummy_to_vehicle" type="fixed">
+    <parent link="dummy"/>
+    <child link="body_link"/>
+    <origin rpy="0 0 0" xyz="0 0 ${gnd_clearance + (body_height/2)}"/>
+    <axis xyz = "0 0 1"/>
+  </joint>
+
+  <!-- THIS IS A BODY LINK -->
+  <link name="body_link">
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        
+        <geometry>
+            <box size="${body_length} ${body_width} ${body_height}"/>
+        </geometry>
+        
+        <!-- <material name="red">
+            <color rgba="1 0 0 1"/>                
+        </material> -->
+    </visual>
+
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>  
+      <geometry>
+          <box size="1.540 0.750 1.63"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="${body_mass}"/>
+      
+      <!-- moment inertia of body -->
+      <!-- let we assume the wheel is a full cuboid, so
+        ixx = Il = 1/12*m (w2 + h2)
+        iyy = Iw = 1/12*m (l2 + h2)
+        izz = Ih = 1/12*m (l2 + w2)
+      -->
+      <inertia
+        ixy="0.0"
+        ixz="0.0"
+        iyz="0.0"
+        ixx = "${(1/12)*body_mass*(body_width*body_width + body_height*body_height)}"
+        iyy = "${(1/12)*body_mass*(body_length*body_length + body_height*body_height)}"
+        izz = "${(1/12)*body_mass*(body_length*body_length + body_width*body_width)}"
+      />
+    </inertial>
+  </link>
+  <!-- ####################### -->
+  
+
+  <!-- THIS IS A WHEEL JOINT -->
+
+  <joint name="frontwheel_lw_joint" type="continuous">
+      <parent link="body_link"/>
+      <child link="frontwheel_lw_link"/>
+      <origin xyz="-0.490 -0.375 -0.665" rpy="0 0 0 "/>
+      <axis xyz="0 1 0"/>
+      <!-- axis y rotation-->
+      <limit effort="1000" velocity="1000"/>
+      <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+  <joint name="frontwheel_rw_joint" type="continuous">
+    <parent link="body_link"/>
+    <child link="frontwheel_rw_link"/>
+    <origin xyz="-0.490 0.375 -0.665" rpy="0 0 0 "/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+    <!-- axis y rotation-->
+  </joint>
+
+  <joint name="rearwheel_lw_joint" type="continuous">
+    <parent link="body_link"/>
+    <child link="rearwheel_lw_link"/>
+    <origin xyz="0.490 -0.375 -0.665" rpy="0 0 0 "/>
+    <axis xyz="0 1 0"/>
+    <!-- axis y rotation-->
+    <limit effort="1000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+  
+  <joint name="rearwheel_rw_joint" type="continuous">
+    <parent link="body_link"/>
+    <child link="rearwheel_rw_link"/>
+    <origin xyz="0.490 0.375 -0.665" rpy="0 0 0 "/>
+    <axis xyz="0 1 0"/>
+    <!-- axis y rotation-->
+    <limit effort="1000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+  <!-- ####################### -->
+
+  <!-- THIS IS A WHEEL LINK -->
+  <link name="frontwheel_lw_link">
+      <visual>
+          <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+          <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+          <geometry>
+            <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+          </geometry>
+          
+          <!-- <material name="yellow">
+              <color rgba="1 1 0 1"/>                
+          </material> -->
+          
+      </visual>
+
+      <collision>
+        <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+        <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+        
+        <!-- <material name="yellow">
+            <color rgba="1 1 0 1"/>                
+        </material> -->
+        
+      </collision>
+
+      <xacro:inertia_of_wheel/>
+  </link>
+  <link name="frontwheel_rw_link">
+    <visual>
+        <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+        <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+        
+        <!-- <material name="yellow">
+            <color rgba="1 1 0 1"/>                
+        </material> -->
+        
+    </visual>
+
+    <collision>
+      <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+      <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      
+      <!-- <material name="yellow">
+          <color rgba="1 1 0 1"/>                
+      </material> -->
+      
+    </collision>
+
+    <xacro:inertia_of_wheel/>
+  </link>
+  <link name="rearwheel_lw_link">
+    <visual>
+        <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+        <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+        
+        <!-- <material name="yellow">
+            <color rgba="1 1 0 1"/>                
+        </material> -->
+        
+    </visual>
+
+    <collision>
+      <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+      <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      
+      <!-- <material name="yellow">
+          <color rgba="1 1 0 1"/>                
+      </material> -->
+      
+    </collision>
+
+    <xacro:inertia_of_wheel/>
+  </link>
+  <link name="rearwheel_rw_link">
+    <visual>
+        <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+        <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+        
+        <!-- <material name="yellow">
+            <color rgba="1 1 0 1"/>                
+        </material> -->
+        
+    </visual>
+
+    <collision>
+      <origin rpy="${wheel_cylindrical_transform} 0 0" xyz="0 0 0"/>
+      <!-- rotation on x as degree on radians (1.570795 is 90 degree in euler)-->
+      <geometry>
+        <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+      </geometry>
+      
+      <!-- <material name="yellow">
+          <color rgba="1 1 0 1"/>                
+      </material> -->
+      
+    </collision>
+
+    <xacro:inertia_of_wheel/>
+  </link>
+  <!-- ####################### -->
+  
+  
+</robot>

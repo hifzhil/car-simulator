@@ -1,0 +1,45 @@
+
+<launch>
+      <arg  name="model"/>
+      <!-- <param    name="robot_description"
+                textfile="$(find spawn_car)/urdf/mevi_description.urdf"
+      />
+       -->
+
+      <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <args name="paused" value="false"/>
+            <args name="gui" value="true"/>
+            <args name="use_sim_time" value="true"/>
+            <args name="headless" value="false"/>
+            <args name="debug" value="false"/>
+      </include>
+    
+      <param      name="robot_description"
+                  command="$(find xacro)/xacro '$(find spawn_car)/urdf/mevi_description.urdf.xacro'"
+      />
+
+       <node      pkg="joint_state_publisher_gui"
+                  name="joint_state_publisher_gui"
+                  type="joint_state_publisher_gui"
+      />
+      
+      <node pkg="robot_state_publisher"
+            name="robot_state_publisher"
+            type="robot_state_publisher"
+      />
+      
+      <node   name="urdf_spawner"
+            pkg="gazebo_ros"
+            type="spawn_model"
+            respawn="false"
+            output="screen"
+            args="-urdf -model robot_model -param robot_description"
+      />
+
+      <node pkg="rviz"
+            name="rviz"
+            type="rviz"
+            args = "-d $(find spawn_car)/rviz/mevi.rviz"
+      />
+
+</launch>  

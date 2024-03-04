@@ -1,0 +1,79 @@
+
+<launch>
+      # Gazebo Parameters
+        <arg name="paused" default="false"/>
+        <arg name="use_sim_time" default="true"/>
+        <arg name="gui" default="true"/>
+        <arg name="headless" default="false"/>
+        <arg name="debug" default="false"/>
+        <arg name="verbose" default="false"/>
+        <arg name="world_name" default="$(find spawn_car)/world/example.world"/>
+    
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+                <arg name="paused" value="$(arg paused)"/>
+                <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+                <arg name="gui" value="$(arg gui)"/>
+                <arg name="headless" value="$(arg headless)"/>
+                <arg name="debug" value="$(arg debug)"/>
+                <arg name="verbose" value="$(arg verbose)"/>
+                <arg name="world_name" value="$(arg world_name)"/>
+        </include>
+      
+        # Simulation Parameters
+        <arg    name="gpu" default="false"/>
+        <arg    name="organize_cloud" default="false"/>
+        <param  name="robot_description"
+                command="$(find xacro)/xacro '$(find spawn_car)/model/mevi/urdf/mevi_description.urdf.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)"
+        />
+      
+        <!-- <arg  name="model"/>
+                <param    name="robot_description"
+                        textfile="$(find spawn_car)/model/mevi/urdf/test.urdf"
+        />
+   -->
+   __     <!-- <node   pkg="joint_state_publisher_gui"
+                name="joint_state_publisher_gui"
+                type="joint_state_publisher_gui"
+        /> -->
+  
+        <node   pkg="robot_state_publisher"
+                name="robot_state_publisher"
+                type="robot_state_publisher"
+                respawn="false"
+                output="screen"
+        >
+                <!-- <param
+                        name="publish_frequency"
+                        type="double"
+                        value="30"
+                /> -->
+                
+                <remap from="/joint_states" to="/mevi_model/joint_states" />
+        </node>
+  
+        <node   name="urdf_spawner"
+                pkg="gazebo_ros"
+                type="spawn_model"
+                respawn="false"
+                output="screen"
+                args="-urdf -param robot_description -model mevi_model"
+        />
+
+
+        <!-- load the controllers -->
+        <rosparam       file="$(find spawn_car)/config/controller.yaml" command="load"/>
+
+        <node   name="controller_spawner" 
+                pkg ="controller_manager" 
+                type="spawner" 
+                ns="/mevi_model"
+                args="steer_controller left_motor_controller right_motor_controller"
+        />
+  
+        <!-- <node   pkg="rviz"
+                name="rviz"
+                type="rviz"
+                args = "-d $(find spawn_car)/rviz/mevi.rviz"
+        /> -->
+  </launch>  
+  

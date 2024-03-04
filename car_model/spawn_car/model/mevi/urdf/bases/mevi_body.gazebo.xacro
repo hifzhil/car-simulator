@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+Created on Sat Jan 20 2024
+
+@author: hifzhil
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mevi"> 
+    <gazebo reference="chassis">
+        <material>Gazebo/White</material>
+      </gazebo>
+</robot>

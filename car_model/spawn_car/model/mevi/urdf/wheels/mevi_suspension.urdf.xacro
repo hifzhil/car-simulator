@@ -10,8 +10,8 @@ Created on Sat Jan 20 2024
         <color rgba="1 1 1 1"/>
     </material>
 
-    <xacro:include filename="$(find spawn_car)/urdf/wheels/suspension.gazebo.xacro"/>
-    <xacro:include filename="$(find spawn_car)/urdf/vehicle_properties.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/mevi/urdf/wheels/suspension.gazebo.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/mevi/urdf/vehicle_properties.urdf.xacro"/>
      
     <xacro:property name="front_wheel_radius" value="0.185"/>
     <xacro:property name="front_wheel_width" value="0.125"/>

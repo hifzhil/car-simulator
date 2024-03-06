@@ -5,7 +5,8 @@ Created on Thu Jan 18 2024
 @author: hifzhil
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mevi"> 
-    <xacro:include filename="$(find spawn_car)/urdf/vehicle_properties.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/mevi/urdf/vehicle_properties.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/mevi/urdf/bases/mevi_body.gazebo.xacro"/>
     
     <material name="chassis_mat">
         <color rgba="0.2 0.2 0.2 1"/>
@@ -30,6 +31,7 @@ Created on Thu Jan 18 2024
         </joint>
     
         <link name="chassis">
+            
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>

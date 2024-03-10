@@ -26,27 +26,30 @@ include_directories(
 
 ## Declare C++ library
 
-add_library(
-  ${PROJECT_NAME}_node
+add_library(CarSimulatorVehicleInterface
   src/nodelets/car_vehicle_interface.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(CarSimulatorVehicleInterface
   ${catkin_LIBRARIES}
-  ${PROJECT_NAME}
 )
 
-add_dependencies(
-  ${PROJECT_NAME}_node 
+add_dependencies(CarSimulatorVehicleInterface
   ${${PROJECT_NAME}_EXPORTED_TARGETS} 
   ${catkin_EXPORTED_TARGETS}
 )
 
-set_target_properties(
-  ${PROJECT_NAME}_node
+set_target_properties(CarSimulatorVehicleInterface
   PROPERTIES COMPILE_FLAGS "-std=c++14 -DPCL_NO_PRECOMPILE"
 )
 
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch/
+)
+
+install(TARGETS CarSimulatorVehicleInterface
+  DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
 # car_nodelet_add_node(
 #   car_simulator_vehicle_interface_node ${PROJECT_NAME} CarSimulatorVehicleInterface
 # )

@@ -31,10 +31,10 @@
                         textfile="$(find spawn_car)/model/mevi/urdf/test.urdf"
         />
    -->
-        <node   pkg="joint_state_publisher_gui"
-                name="joint_state_publisher_gui"
-                type="joint_state_publisher_gui"
-        />
+        <!-- <node   pkg="joint_state_publisher"
+                name="joint_state_publisher"
+                type="joint_state_publisher"
+        /> -->
   
         <node   pkg="robot_state_publisher"
                 name="robot_state_publisher"
@@ -42,13 +42,13 @@
                 respawn="false"
                 output="screen"
         >
-                <!-- <param
+                <param
                         name="publish_frequency"
                         type="double"
                         value="30"
-                /> -->
+                />
                 
-                <!-- <remap from="/joint_states" to="/mevi_model/joint_states" /> -->
+                <remap from="/joint_states" to="/mevi_model/joint_states" />
         </node>
   
         <node   name="urdf_spawner"
@@ -70,10 +70,10 @@
                 args="steer_controller left_motor_controller right_motor_controller"
         />
   
-        <node   pkg="rviz"
+        <!-- <node   pkg="rviz"
                 name="rviz"
                 type="rviz"
                 args = "-d $(find spawn_car)/rviz/mevi.rviz"
-        />
+        /> -->
   </launch>  
   

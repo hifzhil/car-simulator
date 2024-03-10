@@ -1,9 +1,9 @@
 //register  stuff as plugins
 #include <pluginlib/class_list_macros.h>
 #include <car_vehicle_interface/car_vehicle_interface.h>
-PLUGINLIB_EXPORT_CLASS(car_vehicle_interface::CarSimulatorVehicleInterface, nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(car_bridge::CarSimulatorVehicleInterface, nodelet::Nodelet)
 
-namespace car_vehicle_interface
+namespace car_bridge
 {
     void CarSimulatorVehicleInterface::onInit()
     {
@@ -33,9 +33,9 @@ namespace car_vehicle_interface
         car_cmd_sub_ = nh_.subscribe("/car_command", 1, 
                         &CarSimulatorVehicleInterface::HandleCmdInput,this);
         // car_info_sub_ =
-        steering_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/Car_model/mevi/steer_controller/command", 10);
-        motor_left_pub_ = nh_.advertise<std_msgs::Float64>("/Car_model/mevi/left_motor_controller/command", 10);
-        motor_right_pub_ = nh_.advertise<std_msgs::Float64>("/Car_model/mevupdate_car_cmd_i/right_motor_controller/command", 10);
+        steering_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/mevi_model/steer_controller/command", 10);
+        motor_left_pub_ = nh_.advertise<std_msgs::Float64>("/mevi_model/left_motor_controller/command", 10);
+        motor_right_pub_ = nh_.advertise<std_msgs::Float64>("/mevi_model/right_motor_controller/command", 10);
 
 
         NODELET_INFO("Controller ready");
@@ -56,6 +56,8 @@ namespace car_vehicle_interface
     
     void CarSimulatorVehicleInterface::update(const ros::WallTimerEvent &event) 
     {
+        double max_steer = 0.785398;
+        double max_speed = 10.0;
         trajectory.header.stamp = ros::Time::now();
         trajectory.header.frame_id = 'steer';
         trajectory.joint_names.resize(2);
@@ -63,9 +65,10 @@ namespace car_vehicle_interface
         trajectory.joint_names[1] = "front_right_steer_joint";
         //trajectory.points.resize(1);
 
+        steering_cmd = -0.78;
         point.positions.resize(2);
-        point.positions[0] = 0.5;
-        point.positions[1] = 0.5;
+        point.positions[0] = steering_cmd;
+        point.positions[1] = steering_cmd;
         point.time_from_start = ros::Duration(0.01);
 
         trajectory.points.resize(1);
@@ -73,6 +76,7 @@ namespace car_vehicle_interface
         steering_pub_.publish(trajectory);
 
         // for throttle
+        motor_cmd.data = 1.5;
         motor_left_pub_.publish(motor_cmd);
         motor_right_pub_.publish(motor_cmd);
     }

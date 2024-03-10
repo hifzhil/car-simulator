@@ -25,7 +25,7 @@
 using Float64 = std_msgs::Float64;
 using CarCMD = car_msgs::carCMD;
 
-namespace car_vehicle_interface
+namespace car_bridge
 {
 class CarSimulatorVehicleInterface : public nodelet::Nodelet
 {
@@ -51,7 +51,7 @@ class CarSimulatorVehicleInterface : public nodelet::Nodelet
         double steering_cmd;
         ros::WallTimer update_car_cmd_;
         ros::WallTimer init_timer_;
-
+        
 
         void initialize(const ros::WallTimerEvent &);
 

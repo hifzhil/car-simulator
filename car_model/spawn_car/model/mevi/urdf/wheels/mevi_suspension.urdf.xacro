@@ -64,7 +64,7 @@ Created on Sat Jan 20 2024
         <joint name="front_left_steer_joint" type="revolute">
             <parent link="chassis"/>
             <child link="fl_axle"/>
-            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${-front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${-front_track/2} 0"/>
             <axis xyz="0 1 0"/>
             <limit lower="-0.785398" upper="0.785398" effort="500000" velocity="250"/>
         </joint>
@@ -82,7 +82,7 @@ Created on Sat Jan 20 2024
         <joint name="front_right_steer_joint" type="revolute">
             <parent link="chassis"/>
             <child link="fr_axle"/>
-            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${front_track/2} 0"/>
             <axis xyz="0 1 0"/>
             <limit lower="-0.785398" upper="0.785398" effort="500000" velocity="250"/>
         </joint>
@@ -100,7 +100,7 @@ Created on Sat Jan 20 2024
         <joint name="rear_left_wheel_joint" type="continuous">
             <parent link="chassis"/>
             <child link="rear_left_wheel"/>
-            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${-front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${-front_track/2} 0"/>
             <axis xyz="0 0 -1"/>
             <limit effort="1000" velocity="1000"/>
             <dynamics damping="1.0" friction="1.0"/>
@@ -111,7 +111,7 @@ Created on Sat Jan 20 2024
         <joint name="rear_right_wheel_joint" type="continuous">
             <parent link="chassis"/>
             <child link="rear_right_wheel"/>
-            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${front_track/2} 0"/>
             <axis xyz="0 0 -1"/>
             <limit effort="1000" velocity="1000"/>
             <dynamics damping="1.0" friction="1.0"/>

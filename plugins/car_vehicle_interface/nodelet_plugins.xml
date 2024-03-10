@@ -1,7 +1,7 @@
-<library path="lib/libcar_vehicle_interface">
-    <class type="car_vehicle_interface::CarSimulatorVehicleInterface" 
+<library path="lib/libCarSimulatorVehicleInterface">
+    <class type="car_bridge::CarSimulatorVehicleInterface" 
            base_class_type="nodelet::Nodelet"
-           name="car_vehicle_interface/CarSimulatorVehicleInterface">
+           name="car_bridge/CarSimulatorVehicleInterface">
       <description>
             Nodelet to mux and convert carCMD data to steer and throttle controller
       </description>

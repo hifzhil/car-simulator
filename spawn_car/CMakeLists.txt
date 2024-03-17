@@ -32,10 +32,6 @@ catkin_package(
 ## Build ##
 ###########
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch/
-)
-
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(

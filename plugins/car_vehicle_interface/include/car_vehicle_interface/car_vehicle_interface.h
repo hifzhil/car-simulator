@@ -23,7 +23,7 @@
 // using JointTrajectory = trajectory_msgs::JointTrajectory;
 // using JointPoints = trajectory_msgs::JointTrajectoryPoint;
 using Float64 = std_msgs::Float64;
-using CarCMD = car_msgs::carCMD;
+// using CarCMD = car_msgs::carCMD;
 
 namespace car_bridge
 {
@@ -51,11 +51,13 @@ class CarSimulatorVehicleInterface : public nodelet::Nodelet
         double steering_cmd;
         ros::WallTimer update_car_cmd_;
         ros::WallTimer init_timer_;
+        car_msgs::carCMD car_cmd;
+        std::mutex mtx;
         
 
         void initialize(const ros::WallTimerEvent &);
 
-        void HandleCmdInput(const car_msgs::carCMD::ConstPtr &msg);
+        void HandleCmdInput(const car_msgs::carCMD &msg);
 
         void update(const ros::WallTimerEvent &event); 
 }; //class

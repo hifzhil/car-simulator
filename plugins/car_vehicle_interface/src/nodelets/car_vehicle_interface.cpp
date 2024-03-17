@@ -45,10 +45,10 @@ namespace car_bridge
         
     }
 
-    void CarSimulatorVehicleInterface::HandleCmdInput(const car_msgs::carCMD::ConstPtr &msg)
+    void CarSimulatorVehicleInterface::HandleCmdInput(const car_msgs::carCMD &msg)
     {
-        motor_cmd.data = msg->throttle;
-        steering_cmd = msg->steer;
+        std::lock_guard<std::mutex> lock {mtx};
+        car_cmd = msg;
         //jointTrajectoryCMD.points.po[0] = steeringCMD;
         //diff_drive_motor();gmail
         //ackerman_steering();
@@ -56,6 +56,7 @@ namespace car_bridge
     
     void CarSimulatorVehicleInterface::update(const ros::WallTimerEvent &event) 
     {
+        std::lock_guard<std::mutex> lock {mtx};
         double max_steer = 0.785398;
         double max_speed = 10.0;
         trajectory.header.stamp = ros::Time::now();
@@ -67,6 +68,7 @@ namespace car_bridge
 
         steering_cmd = -0.78;
         point.positions.resize(2);
+        auto steering_cmd = std::max(std::min(car_cmd.steer, 0.78), -0.78);
         point.positions[0] = steering_cmd;
         point.positions[1] = steering_cmd;
         point.time_from_start = ros::Duration(0.01);
@@ -76,7 +78,7 @@ namespace car_bridge
         steering_pub_.publish(trajectory);
 
         // for throttle
-        motor_cmd.data = 1.5;
+        motor_cmd.data = car_cmd.throttle;
         motor_left_pub_.publish(motor_cmd);
         motor_right_pub_.publish(motor_cmd);
     }

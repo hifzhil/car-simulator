@@ -32,18 +32,25 @@ Created on Thu Jan 18 2024
     
         <link name="chassis">
             
-            <visual>
+            <!-- <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
                     <box size="${chassis_length} ${chassis_width} ${chassis_thickness}"/>
                 </geometry>
                 <material name="chassis_mat"/>
-            </visual>
+            </visual> -->
+
+            <visual>
+                <origin xyz="0.015 0.0 0.015" rpy="0 0 1.57079632679"/>
+                <geometry>
+                  <mesh filename="file://$(find spawn_car)/model/mevi/meshes/SDTwizy.stl" scale="0.008 0.0055 0.0062"/>
+                </geometry>
+              </visual>
 
             <collision>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <origin xyz="0.015 0.0 0.015" rpy="0 0 1.57079632679"/>
                 <geometry>
-                    <box size="${chassis_length} ${chassis_width} ${chassis_thickness}"/>
+                  <mesh filename="file://$(find spawn_car)/model/mevi/meshes/SDTwizy_collision.stl" scale="0.008 0.0055 0.0062"/>
                 </geometry>
             </collision>
 

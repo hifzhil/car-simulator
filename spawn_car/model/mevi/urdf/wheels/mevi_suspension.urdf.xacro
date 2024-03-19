@@ -13,17 +13,6 @@ Created on Sat Jan 20 2024
     <xacro:include filename="$(find spawn_car)/model/mevi/urdf/wheels/suspension.gazebo.xacro"/>
     <xacro:include filename="$(find spawn_car)/model/mevi/urdf/vehicle_properties.urdf.xacro"/>
      
-    <xacro:property name="front_wheel_radius" value="0.185"/>
-    <xacro:property name="front_wheel_width" value="0.125"/>
-    <xacro:property name="front_wheel_mass" value="10.0"/>
-
-    <xacro:property name="rear_wheel_radius" value="0.185"/>
-    <xacro:property name="rear_wheel_width" value="0.125"/>
-    <xacro:property name="rear_wheel_mass" value="10.0"/>
-
-    <xacro:property name="front_track" value="0.830" />
-    <xacro:property name="rear_track" value="0.750" />
-
     <xacro:property name="Iz_rear_wheel" value="${0.5*rear_wheel_mass*rear_wheel_radius*rear_wheel_radius}"/>
     <xacro:property name="I_rear_wheel" value="${1/12*rear_wheel_mass*(3*rear_wheel_radius*rear_wheel_radius + rear_wheel_width*rear_wheel_width)}"/>
   

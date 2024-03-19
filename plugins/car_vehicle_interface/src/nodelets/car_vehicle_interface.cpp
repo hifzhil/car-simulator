@@ -33,9 +33,9 @@ namespace car_bridge
         car_cmd_sub_ = nh_.subscribe("/car_command", 1, 
                         &CarSimulatorVehicleInterface::HandleCmdInput,this);
         // car_info_sub_ =
-        steering_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/mevi_model/steer_controller/command", 10);
-        motor_left_pub_ = nh_.advertise<std_msgs::Float64>("/mevi_model/left_motor_controller/command", 10);
-        motor_right_pub_ = nh_.advertise<std_msgs::Float64>("/mevi_model/right_motor_controller/command", 10);
+        steering_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/formula_model/steer_controller/command", 10);
+        motor_left_pub_ = nh_.advertise<std_msgs::Float64>("/formula_model/left_motor_controller/command", 10);
+        motor_right_pub_ = nh_.advertise<std_msgs::Float64>("/formula_model/right_motor_controller/command", 10);
 
 
         NODELET_INFO("Controller ready");

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+Created on Thu Jan 18 2024
+
+@author: hifzhil
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="urban"> 
+    <xacro:include filename="$(find spawn_car)/model/urban/urdf/vehicle_properties.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/urban/urdf/bases/urban_body.gazebo.xacro"/>
+    
+    <material name="chassis_mat">
+        <color rgba="0.2 0.2 0.2 1"/>
+        <!-- grey -->
+    </material>
+
+    <xacro:macro name="urban_base" params="name">
+        <link name="dummy">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.001 0.001 0.001"/>
+                </geometry>
+            </visual>
+        </link>
+    
+        <joint name="world_to_vehicle_center" type="fixed">
+            <parent link="dummy"/>
+            <child link="chassis"/>
+            <origin xyz="0.0 0.0 ${ground_clearance + (chassis_thickness/2)}"/>
+            <axis xyz = "0 0 1"/>
+        </joint>
+    
+        <link name="chassis">
+            
+            <!-- <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${chassis_length} ${chassis_width} ${chassis_thickness}"/>
+                </geometry>
+                <material name="chassis_mat"/>
+            </visual> -->
+
+            <visual>
+                <origin xyz="0.015 0.0 0.015" rpy="0 0 1.57079632679"/>
+                <geometry>
+                  <mesh filename="file://$(find spawn_car)/model/urban/meshes/SDTwizy.stl" scale="0.008 0.0055 0.0062"/>
+                </geometry>
+              </visual>
+
+            <collision>
+                <origin xyz="0.015 0.0 0.015" rpy="0 0 1.57079632679"/>
+                <geometry>
+                  <mesh filename="file://$(find spawn_car)/model/urban/meshes/SDTwizy_collision.stl" scale="0.008 0.0055 0.0062"/>
+                </geometry>
+            </collision>
+
+            <xacro:inertia_of_body/>
+        </link>
+    </xacro:macro>
+
+</robot>

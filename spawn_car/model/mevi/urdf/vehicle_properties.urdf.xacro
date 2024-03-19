@@ -43,6 +43,16 @@ Created on Thu Jan 18 12:02:12 2024
     -->
     <xacro:property name="wheel_cylindrical_transform" value="1.570795" />
 
+    <xacro:property name="front_wheel_radius" value="0.172"/>
+    <xacro:property name="front_wheel_width" value="0.125"/>
+    <xacro:property name="front_wheel_mass" value="10.0"/>
+
+    <xacro:property name="rear_wheel_radius" value="0.172"/>
+    <xacro:property name="rear_wheel_width" value="0.125"/>
+    <xacro:property name="rear_wheel_mass" value="10.0"/>
+
+    <xacro:property name="front_track" value="0.830" />
+    <xacro:property name="rear_track" value="0.750" />
 
     <!-- mass -->
     <!-- let assume the mass of box same as half aluminium at it size-->

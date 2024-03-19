@@ -1,4 +1,3 @@
-
 <launch>
       # Gazebo Parameters
         <arg name="paused" default="false"/>
@@ -70,10 +69,26 @@
                 args="steer_controller left_motor_controller right_motor_controller"
         />
   
+        <node   pkg="nodelet" 
+                type="nodelet" 
+                name="standalone_nodelet"  
+                args="manager" 
+                output="screen"
+        />
+  
+        <node   pkg="nodelet" 
+                type="nodelet" 
+                name="CarSimulatorVehicleInterface" 
+                args="load car_bridge/CarSimulatorVehicleInterface standalone_nodelet" 
+                output="screen">
+        </node>
+        
         <!-- <node   pkg="rviz"
                 name="rviz"
                 type="rviz"
                 args = "-d $(find spawn_car)/rviz/mevi.rviz"
         /> -->
+
+
   </launch>  
   

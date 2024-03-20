@@ -24,13 +24,13 @@
     <xacro:Rear_Right_Wheel/>
     <xacro:Rear_Left_Wheel/>
 
-    <xacro:rgb_camera frlr_prefix="front" lrc_prefix="center">
+    <!-- <xacro:rgb_camera frlr_prefix="front" lrc_prefix="center">
       <origin xyz="-0.04 0 1" rpy="0 0.087 0"/>
-    </xacro:rgb_camera>
+    </xacro:rgb_camera> -->
 
-    <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+    <!-- <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
       <origin xyz="0 0 ${car_height - 0.23}" rpy="0 0 0" />
-    </xacro:VLP-16>
+    </xacro:VLP-16> -->
 
       <gazebo>
         <plugin name="p3d" filename="libgazebo_ros_p3d.so">

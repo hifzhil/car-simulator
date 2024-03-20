@@ -6,8 +6,11 @@ Created on Sat Jan 20 2024
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="formula"> 
     <gazebo reference="chassis">
-      <material name="sf24_livery" >
+      <!-- <material name="sf24_livery" >
         <color rgba="0.91 0.03 0.02 1.0" />
+      </material> -->
+      <material>
+        Gazebo/Red  
       </material>
     </gazebo>
 </robot>

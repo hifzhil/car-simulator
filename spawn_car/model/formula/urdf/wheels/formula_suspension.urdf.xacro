@@ -156,9 +156,12 @@ Created on Sat Jan 20 2024
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
+            
             <geometry>
                 <cylinder length="${front_tyre_width}" radius="${front_tyre_radius}"/>
             </geometry>
+
+            <material name="pirelli"/> 
         </collision>
         <xacro:inertia_of_front_wheel/>
     </link>
@@ -175,9 +178,12 @@ Created on Sat Jan 20 2024
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
+
             <geometry>
                 <cylinder length="${front_tyre_width}" radius="${front_tyre_radius}"/>
             </geometry>
+            
+            <material name="pirelli"/> 
         </collision>
         <xacro:inertia_of_front_wheel/>
     </link>
@@ -194,9 +200,12 @@ Created on Sat Jan 20 2024
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
+
             <geometry>
                 <cylinder length="${rear_tyre_width}" radius="${rear_tyre_radius}"/>
             </geometry>
+
+            <material name="pirelli"/> 
         </collision>
         <xacro:inertia_of_rear_wheel/>
     </link>
@@ -213,9 +222,12 @@ Created on Sat Jan 20 2024
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
+            
             <geometry>
                 <cylinder length="${rear_tyre_width}" radius="${rear_tyre_radius}"/>
             </geometry>
+
+            <material name="pirelli"/> 
         </collision>
         <xacro:inertia_of_rear_wheel/>
     </link>

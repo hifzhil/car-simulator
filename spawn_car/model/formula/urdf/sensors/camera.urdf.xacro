@@ -6,6 +6,7 @@
 
     <joint name="${frlr_prefix}_${lrc_prefix}_camera_joint" type="fixed">
       <axis xyz="0 1 0" />
+      <origin xyz="0 0 ${car_height}" rpy="0 0 0"/>
       <xacro:insert_block name="origin"/>
       <!-- parent link dari camera adalah chassis -->
       <parent link="chassis"/>

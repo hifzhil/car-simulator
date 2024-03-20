@@ -14,8 +14,11 @@ Created on Sat Jan 20 2024
         <mu2>${friction_dry_mu}</mu2>
         <minDepth>0.005</minDepth>
         <kp>1e8</kp>
-        <material name="pirelli" >
+        <!-- <material name="pirelli" >
             <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey  
         </material>
     </gazebo>
 
@@ -24,8 +27,11 @@ Created on Sat Jan 20 2024
         <mu2>${friction_dry_mu}</mu2>
         <minDepth>0.005</minDepth>
         <kp>1e8</kp>
-        <material name="pirelli" >
+        <!-- <material name="pirelli" >
             <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey  
         </material>
     </gazebo>
     
@@ -34,8 +40,11 @@ Created on Sat Jan 20 2024
         <mu2>${friction_dry_mu}</mu2>
         <minDepth>0.005</minDepth>
         <kp>1e8</kp>
-        <material name="pirelli" >
+        <!-- <material name="pirelli" >
             <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey  
         </material>
     </gazebo>
 
@@ -44,8 +53,11 @@ Created on Sat Jan 20 2024
         <mu2>${friction_dry_mu}</mu2>
         <minDepth>0.005</minDepth>
         <kp>1e8</kp>
-        <material name="pirelli" >
+        <!-- <material name="pirelli" >
             <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey
         </material>
     </gazebo>
     

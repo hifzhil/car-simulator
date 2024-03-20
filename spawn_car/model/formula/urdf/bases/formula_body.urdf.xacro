@@ -13,6 +13,10 @@ Created on Thu Jan 18 2024
         <!-- grey -->
     </material>
 
+    <material name="sf24_livery" >
+        <color rgba="0.91 0.03 0.02 1.0" />
+    </material>
+
     <xacro:macro name="formula_base" params="name">
         <link name="dummy">
             <visual>
@@ -45,6 +49,11 @@ Created on Thu Jan 18 2024
                 <geometry>
                   <mesh filename="file://$(find spawn_car)/model/formula/meshes/F1_2023_halo_livery.stl" scale="0.03 0.03 0.03"/>
                 </geometry>
+                <!-- <material name="sf24_livery"/> -->
+
+                <material name="sf24_livery" >
+                    <color rgba="0.91 0.03 0.02 1.0" />
+                </material>
             </visual>
 
             <collision>
@@ -52,6 +61,10 @@ Created on Thu Jan 18 2024
                 <geometry>
                     <box size="${car_length} ${car_width} ${car_height - 0.6} "/>
                 </geometry>
+                <!-- <material name="sf24_livery" /> -->
+                <material name="sf24_livery" >
+                    <color rgba="0.91 0.03 0.02 1.0" />
+                </material>
             </collision>
 
             <xacro:inertia_of_body/>

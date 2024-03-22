@@ -1,0 +1,94 @@
+<launch>
+      # Gazebo Parameters
+        <arg name="paused" default="false"/>
+        <arg name="use_sim_time" default="true"/>
+        <arg name="gui" default="true"/>
+        <arg name="headless" default="false"/>
+        <arg name="debug" default="false"/>
+        <arg name="verbose" default="false"/>
+        <arg name="world_name" default="$(find spawn_car)/world/example.world"/>
+    
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+                <arg name="paused" value="$(arg paused)"/>
+                <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+                <arg name="gui" value="$(arg gui)"/>
+                <arg name="headless" value="$(arg headless)"/>
+                <arg name="debug" value="$(arg debug)"/>
+                <arg name="verbose" value="$(arg verbose)"/>
+                <arg name="world_name" value="$(arg world_name)"/>
+        </include>
+      
+        # Simulation Parameters
+        <arg    name="gpu" default="false"/>
+        <arg    name="organize_cloud" default="false"/>
+        <param  name="robot_description"
+                command="$(find xacro)/xacro '$(find spawn_car)/model/urban/urdf/urban_description.urdf.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)"
+        />
+      
+        <!-- <arg  name="model"/>
+                <param    name="robot_description"
+                        textfile="$(find spawn_car)/model/urban/urdf/test.urdf"
+        />
+   -->
+        <!-- <node   pkg="joint_state_publisher"
+                name="joint_state_publisher"
+                type="joint_state_publisher"
+        /> -->
+  
+        <node   pkg="robot_state_publisher"
+                name="robot_state_publisher"
+                type="robot_state_publisher"
+                respawn="false"
+                output="screen"
+        >
+                <param
+                        name="publish_frequency"
+                        type="double"
+                        value="30"
+                />
+                
+                <remap from="/joint_states" to="/urban_model/joint_states" />
+        </node>
+  
+        <node   name="urdf_spawner"
+                pkg="gazebo_ros"
+                type="spawn_model"
+                respawn="false"
+                output="screen"
+                args="-urdf -param robot_description -model urban_model"
+        />
+
+
+        <!-- load the controllers -->
+        <rosparam       file="$(find spawn_car)/model/urban/config/controller.yaml" command="load"/>
+
+        <node   name="controller_spawner" 
+                pkg ="controller_manager" 
+                type="spawner" 
+                ns="/urban_model"
+                args="steer_controller left_motor_controller right_motor_controller"
+        />
+  
+        <node   pkg="nodelet" 
+                type="nodelet" 
+                name="standalone_nodelet"  
+                args="manager" 
+                output="screen"
+        />
+  
+        <node   pkg="nodelet" 
+                type="nodelet" 
+                name="CarSimulatorVehicleInterface" 
+                args="load car_bridge/CarSimulatorVehicleInterface standalone_nodelet" 
+                output="screen">
+        </node>
+        
+        <!-- <node   pkg="rviz"
+                name="rviz"
+                type="rviz"
+                args = "-d $(find spawn_car)/rviz/urban.rviz"
+        /> -->
+
+
+  </launch>  
+  

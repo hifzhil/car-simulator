@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="formula"> 
+
+    <xacro:arg name="gpu" default="false"/>
+    <xacro:property name="gpu" value="$(arg gpu)" />
+    <xacro:arg name="organize_cloud" default="false"/>
+    <xacro:property name="organize_cloud" value="$(arg organize_cloud)" />
+
+  <!-- *************** -->
+    <!-- Include -->
+    <!-- *************** -->
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/bases/formula_body.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/wheels/formula_suspension.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/vehicle_properties.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/sensors/camera.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/sensors/vlp-16.urdf.xacro"/>
+    <!-- *************** -->
+    <!-- Robots Elements -->
+    <!-- *************** -->
+    <xacro:formula_base name="formula"/>
+    <xacro:Front_Right_Wheel/>
+    <xacro:Front_Left_Wheel/>
+    <xacro:Rear_Right_Wheel/>
+    <xacro:Rear_Left_Wheel/>
+
+    <!-- <xacro:rgb_camera frlr_prefix="front" lrc_prefix="center">
+      <origin xyz="-0.04 0 1" rpy="0 0.087 0"/>
+    </xacro:rgb_camera> -->
+
+    <!-- <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+      <origin xyz="0 0 ${car_height - 0.23}" rpy="0 0 0" />
+    </xacro:VLP-16> -->
+
+      <gazebo>
+        <plugin name="p3d" filename="libgazebo_ros_p3d.so">
+          <bodyName>chassis</bodyName>
+          <topicName>base_pose_ground_truth</topicName>
+          <frameName>map</frameName>
+          <updateRate>100.0</updateRate>
+        </plugin>
+      </gazebo>
+
+      <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+          <robotNamespace>/formula_model</robotNamespace>
+          <!--The two lines below came from: https://answers.ros.org/question/292444/gazebo_ros_control-plugin-gazeboroscontrolplugin-missing-legacymodens-defaultrobothwsim/-->
+          <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+          <legacyModeNS>true</legacyModeNS>
+        </plugin>
+      </gazebo>
+  
+      <transmission name="front_left_steer_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="left_steer">
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+          <joint name="front_left_steer_joint">
+
+          <!--this is a  mechanism for ros_control, it can be position, velocity, effort or something
+              to communicate with hardware. See: https://wiki.ros.org/ros_control-->
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          </joint>
+      </transmission>
+      
+      <transmission name="front_right_steer_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="right_steer">
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+          <joint name="front_right_steer_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+          </joint>
+      </transmission>
+
+      <transmission name="rear_left_wheel_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="rear_left_motor">
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+          <joint name="rear_left_wheel_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+          </joint>
+      </transmission>
+      
+      <transmission name="rear_right_wheel_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="rear_right_motor">
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+          <joint name="rear_right_wheel_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+          </joint>
+      </transmission>
+      
+
+</robot>

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+Created on Sat Jan 20 2024
+
+@author: hifzhil
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="formula"> 
+
+    <xacro:property name = "friction_wet_mu" value="0.4"/>
+    <xacro:property name = "friction_dry_mu" value="0.95"/>
+
+    <gazebo reference="front_right_wheel">
+        <mu1>${friction_dry_mu}</mu1>
+        <mu2>${friction_dry_mu}</mu2>
+        <minDepth>0.005</minDepth>
+        <kp>1e8</kp>
+        <!-- <material name="pirelli" >
+            <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey  
+        </material>
+    </gazebo>
+
+    <gazebo reference="front_left_wheel">
+        <mu1>${friction_dry_mu}</mu1>
+        <mu2>${friction_dry_mu}</mu2>
+        <minDepth>0.005</minDepth>
+        <kp>1e8</kp>
+        <!-- <material name="pirelli" >
+            <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey  
+        </material>
+    </gazebo>
+    
+    <gazebo reference="rear_right_wheel">
+        <mu1>${friction_dry_mu}</mu1>
+        <mu2>${friction_dry_mu}</mu2>
+        <minDepth>0.005</minDepth>
+        <kp>1e8</kp>
+        <!-- <material name="pirelli" >
+            <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey  
+        </material>
+    </gazebo>
+
+    <gazebo reference="rear_left_wheel">
+        <mu1>${friction_dry_mu}</mu1>
+        <mu2>${friction_dry_mu}</mu2>
+        <minDepth>0.005</minDepth>
+        <kp>1e8</kp>
+        <!-- <material name="pirelli" >
+            <color rgba="0.35 0.35 0.35 1.0" />
+        </material> -->
+        <material>
+            Gazebo/Grey
+        </material>
+    </gazebo>
+    
+</robot>

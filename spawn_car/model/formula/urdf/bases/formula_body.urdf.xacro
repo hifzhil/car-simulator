@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+Created on Thu Jan 18 2024
+
+@author: hifzhil
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="formula"> 
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/vehicle_properties.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/formula/urdf/bases/formula_body.gazebo.xacro"/>
+    
+    <material name="chassis_mat">
+        <color rgba="0.2 0.2 0.2 1"/>
+        <!-- grey -->
+    </material>
+
+    <material name="sf24_livery" >
+        <color rgba="0.91 0.03 0.02 1.0" />
+    </material>
+
+    <xacro:macro name="formula_base" params="name">
+        <link name="dummy">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.001 0.001 0.001"/>
+                </geometry>
+            </visual>
+        </link>
+    
+        <joint name="world_to_vehicle_center" type="fixed">
+            <parent link="dummy"/>
+            <child link="chassis"/>
+            <origin xyz="0.0 0.0 ${ground_clearance + (chassis_thickness/2)}"/>
+            <axis xyz = "0 0 1"/>
+        </joint>
+    
+        <link name="chassis">
+            
+            <!-- <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${chassis_length} ${chassis_width} ${chassis_thickness}"/>
+                </geometry>
+                <material name="chassis_mat"/>
+            </visual> -->
+
+            <visual>
+                <origin xyz="0.42 -0.015 0.22" rpy="0 0 ${degree_270}"/>
+                <geometry>
+                  <mesh filename="file://$(find spawn_car)/model/formula/meshes/F1_2023_halo_livery.stl" scale="0.03 0.03 0.03"/>
+                </geometry>
+                <!-- <material name="sf24_livery"/> -->
+
+                <material name="sf24_livery" >
+                    <color rgba="0.91 0.03 0.02 1.0" />
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0.42 -0.015 0.0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${car_length} ${car_width} ${car_height - 0.6} "/>
+                </geometry>
+                <!-- <material name="sf24_livery" /> -->
+                <material name="sf24_livery" >
+                    <color rgba="0.91 0.03 0.02 1.0" />
+                </material>
+            </collision>
+
+            <xacro:inertia_of_body/>
+        </link>
+    </xacro:macro>
+
+</robot>

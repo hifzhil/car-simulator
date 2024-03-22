@@ -43,8 +43,14 @@ Node example dibangun dengan roscpp .
     
   - converting a throttle to velocity data : this function needed for diff_drive_controller
 
+  With this integration, you could using some kinematics. Because in an simple terms, to make a mobile robots move, you can just go as simple as make a throttle and a steering
+  
 ## Sensor Plugins : 
-  Also, this project has a sensor plugins for current avalable sensor :
-
+  Also, this project has a sensor plugins for current avalable sensor. This plugins is mandatory on the example node. To find my autonomous algoritm that I developed. You can take a look at my profile, on my other repository
   
 ## WIKI : https://github.com/hifzhil/car-simulator/wiki
+If you have a question like :
+- what is URDF?
+- how to spawn sensor on gazebo?
+- how to use ros controller?
+- I WANT TO MAKE MY OWN AUTONOMOUS CAR IN GAZEBO, STEP TO DO IT?

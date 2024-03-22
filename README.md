@@ -4,20 +4,20 @@ In this project, I will create an easy ROS work environment so that many people 
 
 I tried to match the data type to drive this same car as Carla Simulator, with forking a carla_msgs, and using the same sensor with Carla. My hope in this project is everyone to try to develop their own node even if they don't have a computer compatible with Carla Simulator. Expectation. after trying my model, we can deploy the same node in Carla Simulator (with some additional minor configurations).
    
-# Simulator
+## Simulator
 I am using a Gazebo simulator. The world I using is an opensource map, an opendrive, and my custom world to train my autonomous algorithm. I hope poeple will help this repo and create some fun with it
 
-# Car Model
+## Car Model
 I have create 2 model car. First one is an Urban Car and another is a Formula Car
 
-# Ros Massages
+## Ros Massages
 To control a car in simulation, we need to publish a massage to this available topics :
   - /carCMD
     carCMD contains theese data :
       - throttle : the value is in 0 to 1 range
       - steering : the value is in -1 to 1 range
         
-# Topics Available
+## Topics Available
 - /odometry
 - /lidar
 

@@ -30,10 +30,10 @@
                         textfile="$(find spawn_car)/model/urban/urdf/test.urdf"
         />
    -->
-        <!-- <node   pkg="joint_state_publisher"
+        <node   pkg="joint_state_publisher"
                 name="joint_state_publisher"
                 type="joint_state_publisher"
-        /> -->
+        />
   
         <node   pkg="robot_state_publisher"
                 name="robot_state_publisher"
@@ -47,7 +47,7 @@
                         value="30"
                 />
                 
-                <remap from="/joint_states" to="/urban_model/joint_states" />
+                <!-- <remap from="/joint_states" to="/urban_model/joint_states" /> -->
         </node>
   
         <node   name="urdf_spawner"
@@ -83,11 +83,11 @@
                 output="screen">
         </node>
         
-        <!-- <node   pkg="rviz"
+        <node   pkg="rviz"
                 name="rviz"
                 type="rviz"
                 args = "-d $(find spawn_car)/rviz/urban.rviz"
-        /> -->
+        />
 
 
   </launch>  

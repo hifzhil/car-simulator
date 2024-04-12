@@ -45,13 +45,21 @@ Created on Thu Jan 18 2024
                 <geometry>
                   <mesh filename="file://$(find spawn_car)/model/urban/meshes/SDTwizy.stl" scale="0.008 0.0055 0.0062"/>
                 </geometry>
-              </visual>
-
+                <material name="chassis_mat">
+                    <color rgba="0.2 0.2 0.2 1"/>
+                    <!-- grey -->
+                </material>
+            </visual>
+            
             <collision>
                 <origin xyz="0.015 0.0 0.015" rpy="0 0 1.57079632679"/>
                 <geometry>
                   <mesh filename="file://$(find spawn_car)/model/urban/meshes/SDTwizy_collision.stl" scale="0.008 0.0055 0.0062"/>
                 </geometry>
+                <material name="chassis_mat">
+                    <color rgba="0.2 0.2 0.2 1"/>
+                    <!-- grey -->
+                </material>
             </collision>
 
             <xacro:inertia_of_body/>

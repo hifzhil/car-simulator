@@ -65,9 +65,11 @@ namespace car_bridge
         //trajectory.points.resize(1);
 
         point.positions.resize(2);
+
         auto steering_cmd = std::max(std::min(car_cmd.steer, max_steer_), -max_steer_);
-        auto turn_radius = wheel_base_length_ / std::tan(steering_cmd);
+        
         double left_steer_angle, right_steer_angle;
+        
         if (steering_cmd == 0)
         {
             left_steer_angle = 0;
@@ -76,6 +78,20 @@ namespace car_bridge
         else
         {
             /**
+            * @brief : max of steering angle is 45 degree
+            *          so we need to clamp it
+            */
+            auto min_radius_per_steer = wheel_base_length_ / std::tan(max_steer_) + front_track_width_/2;
+            auto turn_radius = wheel_base_length_ / std::tan(steering_cmd);
+            
+            if (turn_radius > 0){turn_radius = std::max(turn_radius, min_radius_per_steer);}
+            else {turn_radius = std::min(turn_radius, -min_radius_per_steer);}
+            
+            // turn_radius = std::min(turn_radius, max_radius_per_steer);
+            // turn_radius = std::max(turn_radius, -max_radius_per_steer);
+            NODELET_INFO("Turn radius: %f", turn_radius);
+            
+            /**
              * @brief : if steering > 0 is to the right
              *          if steering < 0 is to the left
              *          so the acckermann equation should be like below
@@ -83,6 +99,9 @@ namespace car_bridge
             left_steer_angle = std::atan(wheel_base_length_ / (turn_radius + front_track_width_/2));
             right_steer_angle = std::atan(wheel_base_length_ / (turn_radius - front_track_width_/2));
         }
+
+
+
         point.positions[0] = left_steer_angle;
         point.positions[1] = right_steer_angle;
         point.time_from_start = ros::Duration(0.01);

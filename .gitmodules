@@ -1,3 +1,6 @@
 [submodule "plugins/realsense_gazebo_plugin"]
 	path = plugins/realsense_gazebo_plugin
 	url = https://github.com/issaiass/realsense_gazebo_plugin.git
+[submodule "plugins/ros-carla-msgs"]
+	path = plugins/ros-carla-msgs
+	url = https://github.com/carla-simulator/ros-carla-msgs.git

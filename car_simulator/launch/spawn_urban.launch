@@ -7,6 +7,7 @@
         <arg name="debug" default="false"/>
         <arg name="verbose" default="false"/>
         <arg name="world_name" default="$(find spawn_car)/world/example.world"/>
+        <!-- <arg name="world_name" default="/home/foccy/resource/citysim/worlds/simple_city.world"/> -->
     
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
                 <arg name="paused" value="$(arg paused)"/>
@@ -30,9 +31,9 @@
                         textfile="$(find spawn_car)/model/urban/urdf/test.urdf"
         />
    -->
-        <node   pkg="joint_state_publisher"
-                name="joint_state_publisher"
-                type="joint_state_publisher"
+        <node   pkg="joint_state_publisher_gui"
+                name="joint_state_publisher_gui"
+                type="joint_state_publisher_gui"
         />
   
         <node   pkg="robot_state_publisher"

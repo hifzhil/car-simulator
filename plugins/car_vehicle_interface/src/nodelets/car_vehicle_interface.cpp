@@ -33,9 +33,9 @@ namespace car_bridge
         car_cmd_sub_ = nh_.subscribe("/car_command", 1, 
                         &CarSimulatorVehicleInterface::HandleCmdInput,this);
         // car_info_sub_ =
-        steering_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/formula_model/steer_controller/command", 10);
-        motor_left_pub_ = nh_.advertise<std_msgs::Float64>("/formula_model/left_motor_controller/command", 10);
-        motor_right_pub_ = nh_.advertise<std_msgs::Float64>("/formula_model/right_motor_controller/command", 10);
+        steering_pub_ = nh_.advertise<trajectory_msgs::JointTrajectory>("/urban_model/steer_controller/command", 10);
+        motor_left_pub_ = nh_.advertise<std_msgs::Float64>("/urban_model/left_motor_controller/command", 10);
+        motor_right_pub_ = nh_.advertise<std_msgs::Float64>("/urban_model/right_motor_controller/command", 10);
 
 
         NODELET_INFO("Controller ready");
@@ -57,8 +57,6 @@ namespace car_bridge
     void CarSimulatorVehicleInterface::update(const ros::WallTimerEvent &event) 
     {
         std::lock_guard<std::mutex> lock {mtx};
-        double max_steer = 0.785398;
-        double max_speed = 10.0;
         trajectory.header.stamp = ros::Time::now();
         trajectory.header.frame_id = 'steer';
         trajectory.joint_names.resize(2);
@@ -66,11 +64,27 @@ namespace car_bridge
         trajectory.joint_names[1] = "front_right_steer_joint";
         //trajectory.points.resize(1);
 
-        steering_cmd = -0.78;
         point.positions.resize(2);
-        auto steering_cmd = std::max(std::min(car_cmd.steer, 0.78), -0.78);
-        point.positions[0] = steering_cmd;
-        point.positions[1] = steering_cmd;
+        auto steering_cmd = std::max(std::min(car_cmd.steer, max_steer_), -max_steer_);
+        auto turn_radius = wheel_base_length_ / std::tan(steering_cmd);
+        double left_steer_angle, right_steer_angle;
+        if (steering_cmd == 0)
+        {
+            left_steer_angle = 0;
+            right_steer_angle = 0;
+        }
+        else
+        {
+            /**
+             * @brief : if steering > 0 is to the right
+             *          if steering < 0 is to the left
+             *          so the acckermann equation should be like below
+            */
+            left_steer_angle = std::atan(wheel_base_length_ / (turn_radius + front_track_width_/2));
+            right_steer_angle = std::atan(wheel_base_length_ / (turn_radius - front_track_width_/2));
+        }
+        point.positions[0] = left_steer_angle;
+        point.positions[1] = right_steer_angle;
         point.time_from_start = ros::Duration(0.01);
 
         trajectory.points.resize(1);

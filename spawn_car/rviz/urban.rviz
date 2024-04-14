@@ -171,7 +171,7 @@ Visualization Manager:
       Value: false
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /formula/front_center_camera/image_raw
+      Image Topic: /urban/front_center_camera/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
@@ -237,7 +237,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.243008613586426
+      Distance: 11.605813980102539
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -253,9 +253,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.48039817810058594
+      Pitch: 0.4053982198238373
       Target Frame: <Fixed Frame>
-      Yaw: 4.556761741638184
+      Yaw: 5.5567626953125
     Saved: ~
 Window Geometry:
   Displays:
@@ -275,5 +275,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 0
-  Y: 42
+  X: -32
+  Y: 10

@@ -54,6 +54,12 @@ class CarSimulatorVehicleInterface : public nodelet::Nodelet
         car_msgs::carCMD car_cmd;
         std::mutex mtx;
         
+        double front_track_width_ = 0.830;
+        double rear_track_width_ = 0.750;
+        double wheel_base_length_ = 0.98;
+
+        double max_steer_ = 0.78;
+        double max_speed_ = 10;
 
         void initialize(const ros::WallTimerEvent &);
 

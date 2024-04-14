@@ -9,7 +9,8 @@ set(COMMON_DEPS
 )
 
 find_package(catkin REQUIRED COMPONENTS
-  ${COMMON_DEPS})
+  ${COMMON_DEPS}
+)
 
 
 catkin_package(

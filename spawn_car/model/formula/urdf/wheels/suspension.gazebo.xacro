@@ -18,7 +18,7 @@ Created on Sat Jan 20 2024
             <color rgba="0.35 0.35 0.35 1.0" />
         </material> -->
         <material>
-            Gazebo/Grey  
+            Gazebo/Black  
         </material>
     </gazebo>
 
@@ -31,7 +31,7 @@ Created on Sat Jan 20 2024
             <color rgba="0.35 0.35 0.35 1.0" />
         </material> -->
         <material>
-            Gazebo/Grey  
+            Gazebo/Black  
         </material>
     </gazebo>
     
@@ -44,7 +44,7 @@ Created on Sat Jan 20 2024
             <color rgba="0.35 0.35 0.35 1.0" />
         </material> -->
         <material>
-            Gazebo/Grey  
+            Gazebo/Black  
         </material>
     </gazebo>
 
@@ -57,7 +57,7 @@ Created on Sat Jan 20 2024
             <color rgba="0.35 0.35 0.35 1.0" />
         </material> -->
         <material>
-            Gazebo/Grey
+            Gazebo/Black
         </material>
     </gazebo>
     

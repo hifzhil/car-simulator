@@ -58,6 +58,8 @@
   <exec_depend>joint_trajectory_controller</exec_depend>
   <exec_depend>velodyne_description</exec_depend>
   <exec_depend>velodyne_gazebo_plugins</exec_depend>
+  <exec_depend>realsense2_camera</exec_depend>
+  <exec_depend>realsense2_description</exec_depend>
   <exec_depend>teleop_twist_keyboard</exec_depend>
   <buildtool_depend>catkin</buildtool_depend>
 

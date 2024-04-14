@@ -15,6 +15,8 @@
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/vehicle_properties.urdf.xacro"/>
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/camera.urdf.xacro"/>
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/vlp-16.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/_d435.urdf.xacro"/>
+
     <!-- *************** -->
     <!-- Robots Elements -->
     <!-- *************** -->
@@ -31,6 +33,14 @@
     <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
       <origin xyz="0 0 0.8" rpy="0 0 0" />
     </xacro:VLP-16>
+
+    <xacro:sensor_d435 parent="chassis" name="camera1">
+      <origin xyz="0.1 0 2.0" rpy="0 0 0"/>
+    </xacro:sensor_d435>
+
+    <xacro:sensor_d435 parent="chassis" name="camera2">
+      <origin xyz="-0.1 0 2.0" rpy="0 0 3.1456"/>
+    </xacro:sensor_d435>
 
       <gazebo>
         <plugin name="p3d" filename="libgazebo_ros_p3d.so">

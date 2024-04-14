@@ -68,6 +68,10 @@ namespace car_bridge
 
         auto steering_cmd = std::max(std::min(car_cmd.steer, max_steer_), -max_steer_);
         
+
+        /**
+        * @brief : Ackermann Steering Calculation
+        */
         double left_steer_angle, right_steer_angle;
         
         if (steering_cmd == 0)

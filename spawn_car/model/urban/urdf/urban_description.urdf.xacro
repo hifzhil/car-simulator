@@ -27,20 +27,16 @@
     <xacro:Rear_Left_Wheel/>
 
     <xacro:rgb_camera frlr_prefix="front" lrc_prefix="center">
-      <origin xyz="-0.04 0 1" rpy="0 0.087 0"/>
+      <origin xyz="0.00 0 0.9" rpy="0 0.087 0"/>
     </xacro:rgb_camera>
 
     <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
       <origin xyz="0 0 0.8" rpy="0 0 0" />
     </xacro:VLP-16>
 
-    <xacro:sensor_d435 parent="chassis" name="camera1">
-      <origin xyz="0.1 0 2.0" rpy="0 0 0"/>
-    </xacro:sensor_d435>
-
-    <xacro:sensor_d435 parent="chassis" name="camera2">
-      <origin xyz="-0.1 0 2.0" rpy="0 0 3.1456"/>
-    </xacro:sensor_d435>
+    <xacro:sensor_d435 name="camera" topics_ns="camera" parent="chassis" publish_pointcloud="true">
+      <origin xyz="0.6 0 0.4" rpy="0 0 0" />
+    </xacro:sensor_d435>  
 
       <gazebo>
         <plugin name="p3d" filename="libgazebo_ros_p3d.so">

@@ -25,11 +25,10 @@
       </collision>
 
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="${degree_90} 0 ${degree_90}"/>
         <geometry>
-          <box size="0.026 0.026 0.0203"/>
+            <mesh filename="package://spawn_car/model/urban/meshes/c270.stl" scale="0.0001 0.0001 0.0001"/>
         </geometry>
-        <material name="red"/>
       </visual>
 
       <inertial>
@@ -49,7 +48,7 @@
         <gazebo reference="${frlr_prefix}_${lrc_prefix}_camera_link">
             <mu1>0.2</mu1>
             <mu2>0.2</mu2>
-            <material>Gazebo/Red</material>
+            <material>Gazebo/Grey</material>
             <sensor type="camera" name="${frlr_prefix}_${lrc_prefix}_camera">
                 <update_rate>30.0</update_rate>
                 <camera name="head">

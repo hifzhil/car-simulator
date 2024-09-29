@@ -6,8 +6,8 @@
       <arg name="headless" default="false"/>
       <arg name="debug" default="false"/>
       <arg name="verbose" default="false"/>
-      <!-- <arg name="world_name" default="$(find spawn_car)/world/example.world"/> -->
-      <arg name="world_name" default="/home/foccy/resource/citysim/worlds/simple_city.world"/>
+      <arg name="world_name" default="$(find spawn_car)/world/example.world"/>
+      <!-- <arg name="world_name" default="/home/foccy/resource/citysim/worlds/simple_city.world"/> -->
   
       <include file="$(find gazebo_ros)/launch/empty_world.launch">
               <arg name="paused" value="$(arg paused)"/>
@@ -84,11 +84,11 @@
               output="screen">
       </node>
       
-      <node   pkg="rviz"
+      <!-- <node   pkg="rviz"
               name="rviz"
               type="rviz"
               args = "-d $(find spawn_car)/rviz/formula.rviz"
-      />
+      /> -->
 
 
 </launch>  

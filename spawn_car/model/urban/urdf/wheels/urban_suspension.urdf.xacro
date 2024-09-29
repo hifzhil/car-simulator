@@ -7,7 +7,8 @@ Created on Sat Jan 20 2024
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="suspension urdf">
     
     <material name="tire_mat">
-        <color rgba="1 1 1 1"/>
+        <!-- <color rgba="1 1 1 1"/> -->
+        <color rgba="0.35 0.35 0.35 1.0" />
     </material>
 
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/wheels/suspension.gazebo.xacro"/>
@@ -53,7 +54,7 @@ Created on Sat Jan 20 2024
         <joint name="front_left_steer_joint" type="revolute">
             <parent link="chassis"/>
             <child link="fl_axle"/>
-            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${front_track/2} ${front_tyre_radius - ground_clearance}"/>
             <axis xyz="0 -1 0"/>
             <limit lower="-0.785398" upper="0.785398" effort="500000" velocity="250"/>
         </joint>
@@ -71,7 +72,7 @@ Created on Sat Jan 20 2024
         <joint name="front_right_steer_joint" type="revolute">
             <parent link="chassis"/>
             <child link="fr_axle"/>
-            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${-front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${wheel_base/2} ${-front_track/2} ${front_tyre_radius - ground_clearance}"/>
             <axis xyz="0 -1 0"/>
             <limit lower="-0.785398" upper="0.785398" effort="500000" velocity="250"/>
         </joint>
@@ -89,7 +90,7 @@ Created on Sat Jan 20 2024
         <joint name="rear_left_wheel_joint" type="continuous">
             <parent link="chassis"/>
             <child link="rear_left_wheel"/>
-            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${rear_track/2} ${rear_tyre_radius - ground_clearance - 0.02}"/>
             <axis xyz="0 0 -1"/>
             <limit effort="1000" velocity="1000"/>
             <dynamics damping="1.0" friction="1.0"/>
@@ -100,7 +101,7 @@ Created on Sat Jan 20 2024
         <joint name="rear_right_wheel_joint" type="continuous">
             <parent link="chassis"/>
             <child link="rear_right_wheel"/>
-            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${-front_track/2} 0"/>
+            <origin rpy="${degree_90} 0 0" xyz="${-wheel_base/2} ${-rear_track/2} ${rear_tyre_radius - ground_clearance - 0.02}"/>
             <axis xyz="0 0 -1"/>
             <limit effort="1000" velocity="1000"/>
             <dynamics damping="1.0" friction="1.0"/>
@@ -109,18 +110,18 @@ Created on Sat Jan 20 2024
 
     <link name="fl_axle">
         <inertial>
-          <mass value="1"/>
-          <origin xyz="0 0 0"/>
-          <inertia ixx="0.004" ixy="0.0" ixz="0.0" iyy="0.004" iyz="0.0" izz="0.004"/>
+            <mass value="1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.004" ixy="0.0" ixz="0.0" iyy="0.004" iyz="0.0" izz="0.004"/>
         </inertial>
         <collision>
             <geometry>
-              <box size="0.05 0.05 0.15" />
+                <box size="0.005 0.005 0.005" />
             </geometry>
         </collision>
         <visual>
             <geometry>
-              <box size="0.05 0.05 0.15" />
+                <box size="0.005 0.005 0.005" />
             </geometry>
         </visual>
     </link>
@@ -133,12 +134,12 @@ Created on Sat Jan 20 2024
         </inertial>
         <collision>
             <geometry>
-              <box size="0.05 0.05 0.15" />
+              <box size="0.005 0.005 0.005" />
             </geometry>
         </collision>
         <visual>
             <geometry>
-              <box size="0.05 0.05 0.15" />
+              <box size="0.005 0.005 0.005" />
             </geometry>
         </visual>
     </link>
@@ -148,14 +149,14 @@ Created on Sat Jan 20 2024
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <cylinder length="${front_tyre_width}" radius="${front_tyre_radius}"/>
+                <mesh filename="file://$(find spawn_car)/model/urban/meshes/mevi_tire.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="tire_mat"/> 
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <cylinder length="${front_tyre_width}" radius="${front_tyre_radius}"/>
+                <mesh filename="file://$(find spawn_car)/model/urban/meshes/mevi_tire.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
         <xacro:inertia_of_front_wheel/>
@@ -165,14 +166,14 @@ Created on Sat Jan 20 2024
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <cylinder length="${front_tyre_width}" radius="${front_tyre_radius}"/>
+                <mesh filename="file://$(find spawn_car)/model/urban/meshes/mevi_tire.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="tire_mat"/> 
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <cylinder length="${front_tyre_width}" radius="${front_tyre_radius}"/>
+                <mesh filename="file://$(find spawn_car)/model/urban/meshes/mevi_tire.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
         <xacro:inertia_of_front_wheel/>

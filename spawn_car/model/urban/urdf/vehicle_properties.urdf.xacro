@@ -30,8 +30,8 @@ Created on Thu Jan 18 12:02:12 2024
     <!-- chassis -->
     <xacro:property name="chassis_width" value="0.830" />
     <xacro:property name="chassis_length" value="1.49" />
-    <xacro:property name="chassis_thickness" value="0.03" />
-    <xacro:property name="chassis_mass" value="200" />
+    <xacro:property name="chassis_thickness" value="1.00" />
+    <xacro:property name="chassis_mass" value="250" />
        <!-- variable -->
 
     <!-- aluminium density is 2.7 g/cm³ or 2700 kg/m3-->
@@ -44,11 +44,11 @@ Created on Thu Jan 18 12:02:12 2024
     -->
     <xacro:property name="wheel_cylindrical_transform" value="1.570795" />
 
-    <xacro:property name="front_tyre_radius" value="0.172"/>
+    <xacro:property name="front_tyre_radius" value="0.19"/>
     <xacro:property name="front_tyre_width" value="0.125"/>
     <xacro:property name="front_tyre_mass" value="10.0"/>
 
-    <xacro:property name="rear_tyre_radius" value="0.172"/>
+    <xacro:property name="rear_tyre_radius" value="0.19"/>
     <xacro:property name="rear_tyre_width" value="0.125"/>
     <xacro:property name="rear_tyre_mass" value="10.0"/>
 

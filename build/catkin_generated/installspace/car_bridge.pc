@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: car_bridge
-Description: Description of car_bridge
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib -lcar_vehicle_interface
-Requires: std_msgs car_msgs nodelet pluginlib

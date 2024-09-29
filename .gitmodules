@@ -5,5 +5,5 @@
 	path = plugins/ros-carla-msgs
 	url = https://github.com/carla-simulator/ros-carla-msgs.git
 [submodule "plugins/citysim"]
-        path = plugins/citysim
-        url = https://github.com/pilsbot/citysim.git
+	path = plugins/citysim
+	url = https://github.com/pilsbot/citysim.git

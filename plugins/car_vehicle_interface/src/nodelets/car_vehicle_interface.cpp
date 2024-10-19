@@ -93,7 +93,7 @@ namespace car_bridge
             
             // turn_radius = std::min(turn_radius, max_radius_per_steer);
             // turn_radius = std::max(turn_radius, -max_radius_per_steer);
-            NODELET_INFO("Turn radius: %f", turn_radius);
+            // NODELET_INFO("Turn radius: %f", turn_radius);
             
             /**
              * @brief : if steering > 0 is to the right

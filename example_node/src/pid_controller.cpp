@@ -3,6 +3,7 @@
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include <chrono>
 //#include <algorithm>
 
 PidController::PidController() {}
@@ -15,67 +16,80 @@ void PidController::pid_init(double kpp, double kii, double kdd, double min, dou
     Ki = kii;
     Kd = kdd;
     limit_min = min;
-    limit_maks = max;
-    cte = 0.0;
-    diff_cte = 0.0;
+    limit_max = max;
     sum_cte = 0.0;
-    sum_old = 0.0;
-    error_old = 0.0;
+    prev_error = 0.0;
     is_first = true;
 }
 
 double PidController::update_error(double cte_current)
 {
-    // if (is_first) 
-    // {
-    // 	diff_cte = 0;
-    // 	is_first = false;
-    // } 
-    // else 
-    // {
-    //     diff_cte = (cte_current - cte)/(delta_time * 0.7 + 0.3 * diff_cte);
-        
-    //     // if (std::abs(delta_time) < 0.0001)
-    //     // {
-    //     // diff_cte = 0;
-    //     // }
-    //     // else
-	// 	// {
-    //     // diff_cte = (cte_current - cte)/(delta_time * 0.7 + 0.3 * diff_cte);
-    //     // }
-    // }
-    //sum_cte = (sum_cte + cte_current *0.3);
-    up = cte_current*Kp;
-    ui = sum_old + Ki*cte_current;
-    ud = (cte_current - error_old)*Kd;
+    /*
+    * @brief dt is a elapsed time or delta_T
+    */
+    auto current_time = std::chrono::steady_clock::now();
+    double dt;
+    if (is_first)
+    {
+        is_first = false;
+        dt = 0.0;
+        prev_time = current_time;
+    }
+    else
+    {
+        std::chrono::duration<double> elapsed = current_time - prev_time;
+        dt = elapsed.count();
+        ROS_INFO("dt: %f", dt);
+    }
+    double error = cte_current;
+    
+    /*
+    * @brief now we can calculate the P, I, and D terms
+    */
+    up = Kp * error;
+    if (dt > 0)
+    {
+        sum_cte += error * dt;
+        ui = Ki * sum_cte;
+        ud = Kd * (error - prev_error)/ dt;
+    }
+    else
+    {
+        ui = 0;
+        ud = 0;
+    }
+
+    /*
+    * @brief compute the control output
+    */
     u = up + ui + ud;
+    
     /**
-    *@brief anti wind up
+    *@brief anti windup
     */
     if(u < limit_min)
     {
         u = limit_min;
+        sum_cte -= error * dt;
     }
-    else if(u > limit_maks)
+    else if(u > limit_max)
     {
-        u = limit_maks;
+        u = limit_max;
+        sum_cte -= error * dt;
     }
-    else
-    {
-        sum_old = ui;
-    }
-    error_old = cte_current;
+
+    /*
+    * @brief update the prev val
+    */
+    prev_error = error;
+    prev_time = current_time;
+
     return u;
 }
 void PidController::show_error (bool debug)
 {
     if(debug)
     {
-        std::cout<<"Cte :"<<error_old<<" Control :"<<u<<"P : "<<up<<"I : "<<ui<<"D : "<<ud<<std::endl;
+        ROS_INFO("Cte: %.3f, Control: %.3f, P: %.3f, I: %.3f, D: %.3f", prev_error, u, up, ui, ud);
     }
-}
-
-void PidController::update_delta_time(double new_delta)
-{
-    delta_time = new_delta;
 }

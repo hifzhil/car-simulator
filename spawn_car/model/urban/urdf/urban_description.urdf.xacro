@@ -30,13 +30,13 @@
       <origin xyz="0.3 0 1.39" rpy="0 0.087 0"/>
     </xacro:rgb_camera> -->
 
-    <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+    <!-- <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
       <origin xyz="0.3 0 1.30" rpy="0 0 0" />
     </xacro:VLP-16>
 
     <xacro:sensor_d435 name="camera" topics_ns="camera" parent="chassis" publish_pointcloud="true">
       <origin xyz="0.8 0 0.4" rpy="0 0 0" />
-    </xacro:sensor_d435>  
+    </xacro:sensor_d435>   -->
 
       <gazebo>
         <plugin name="p3d" filename="libgazebo_ros_p3d.so">
@@ -85,7 +85,7 @@
           <mechanicalReduction>1</mechanicalReduction>
         </actuator>
           <joint name="rear_left_wheel_joint">
-            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
           </joint>
       </transmission>
       
@@ -95,7 +95,7 @@
           <mechanicalReduction>1</mechanicalReduction>
         </actuator>
           <joint name="rear_right_wheel_joint">
-            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
           </joint>
       </transmission>
 </robot>

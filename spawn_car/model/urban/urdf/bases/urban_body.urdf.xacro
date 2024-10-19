@@ -16,7 +16,7 @@ Created on Thu Jan 18 2024
     <xacro:macro name="urban_base" params="name">
         <link name="dummy">
             <visual>
-                <origin xyz="0 0 0.5" rpy="0 0 0"/>
+                <origin xyz="0.0 0.0 0.5" rpy="0 0 0"/>
                 <geometry>
                     <box size="0.001 0.001 0.001"/>
                 </geometry>

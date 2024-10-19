@@ -5,6 +5,9 @@
 #define PID_CONTROLLER_H
 class PidController
 {
+private:
+    bool is_first;
+    std::chrono::steady_clock::time_point prev_time;
 public:
     /**
     * @brief Constructor
@@ -28,12 +31,10 @@ public:
     double diff_cte;
     double sum_cte;
     
-    double limit_maks;
+    double limit_max;
     double limit_min;
-
-    double sum_old;
-    double error_old;
-    double delta_time;
+    double prev_error;
+    double dt;
 
     double u;
     double up;
@@ -57,8 +58,6 @@ public:
     /**
     * @brief update delta time
     */
-    void update_delta_time (double new_delta);
-protected:
-    bool is_first;
+    // void update_delta_time (double new_delta);
 };
 #endif //PID_CONTROLLER_H

@@ -6,8 +6,8 @@
         <arg name="headless" default="false"/>
         <arg name="debug" default="false"/>
         <arg name="verbose" default="false"/>
-        <arg name="world_name" default="$(find spawn_car)/world/example.world"/>
-        <!-- <arg name="world_name" default="$(find spawn_car)/world/simple_city.world"/> -->
+        <!-- <arg name="world_name" default="$(find spawn_car)/world/example.world"/> -->
+        <arg name="world_name" default="$(find spawn_car)/world/simple_city.world"/>
     
         <include file="$(find gazebo_ros)/launch/empty_world.launch">
                 <arg name="paused" value="$(arg paused)"/>
@@ -31,10 +31,10 @@
                         textfile="$(find spawn_car)/model/urban/urdf/test.urdf"
         />
    -->
-        <node   pkg="joint_state_publisher_gui"
+        <!-- <node   pkg="joint_state_publisher_gui"
                 name="joint_state_publisher_gui"
                 type="joint_state_publisher_gui"
-        />
+        /> -->
   
         <node   pkg="robot_state_publisher"
                 name="robot_state_publisher"
@@ -56,7 +56,7 @@
                 type="spawn_model"
                 respawn="false"
                 output="screen"
-                args="-urdf -param robot_description -model urban_model"
+                args="-urdf -param robot_description -model urban_model -x -14.0 -y -1.85 -z 6.0 -R 0.0 -P 0.0 -Y 0.0"
         />
 
 
@@ -84,11 +84,11 @@
                 output="screen">
         </node>
         
-        <node   pkg="rviz"
+        <!-- <node   pkg="rviz"
                 name="rviz"
                 type="rviz"
                 args = "-d $(find spawn_car)/rviz/urban.rviz"
-        />
+        /> -->
 
 
   </launch>  

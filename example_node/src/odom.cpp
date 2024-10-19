@@ -60,9 +60,29 @@ void OdomWrapper::callbackHandler(const nav_msgs::OdometryConstPtr &msg)
     }
     pitch = asin(t2) * (180 / M_PI);
     angle = atan2(siny_cosp, cosy_cosp) * (180 / M_PI);
-    angle = atan2(siny_cosp, cosy_cosp) * (180 / M_PI);
     double vx = msg->twist.twist.linear.x;
     double vy = msg->twist.twist.linear.y;
     double vz = msg->twist.twist.linear.z;
-    velocity = sqrt(pow(vx, 2) + pow(vy, 2)) * 3.6;
+    velocity = sqrt(pow(vx, 2) + pow(vy, 2));
+    ROS_INFO("Current velocity: %.2f m/s", velocity);
+    updateState();
+}
+
+
+void OdomWrapper::updateState()
+{
+    if(posX > junctionLocation[index_junction][0] - 15 && posX < junctionLocation[index_junction][0] + 15 && posY > junctionLocation[index_junction][1] - 15 && posY < junctionLocation[index_junction][1] + 15)
+    {
+        is_junction = true;
+    }
+    else
+    {
+        is_junction = false;
+    }
+
+    if(posX > traffic_check[index_junction][0] - 3 && posX < traffic_check[index_junction][0] + 3 && posY > traffic_check[index_junction][1] - 3 && posY < traffic_check[index_junction][1] + 3)
+    {
+        index_junction += 1;
+    }
+
 }

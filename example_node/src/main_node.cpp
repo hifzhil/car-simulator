@@ -7,6 +7,10 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include <fstream> // Include for file handling
+#include <chrono>  // Include for time handling
+#include <ctime>   // Include for time functions
+#include <sstream> // Include for string stream
 // ros
 PidController throttle_pid  = PidController();
 PublishWrapper *pubWrapper;
@@ -40,17 +44,24 @@ double trajectory[][2] = {
 uint index_waypoints = 0;
 double ego_steer = 0.0;
 double ego_delta = 0.0;
-double ego_throttle = 10.0;
+double ego_throttle = 0.0;
 bool driving_rules = false;
+double target_vel = 0;
 int a = 1;
 void steering_function(double target_x, double target_y);
 void update();
 void pure_pursuit (double target_x, double target_y); 
+void log_to_csv(double velocity, double reference_speed, double crosstrack_e, double delta, double yaw, double posX, double posY, double time_step);
 double constant_velocity (double vel);
 
 // pure pursuit variable
 double L_ = 0.98;
 double Kdd_ = 0.2;
+double crosstrack_e_ = 0.0;
+double delta_ = 0.0;
+
+auto prev_time = std::chrono::system_clock::now();
+double time_step = 1.0;
 
 int main(int argc, char **argv)
 {
@@ -64,7 +75,7 @@ int main(int argc, char **argv)
     /**
      * @brief pid(kp,ki,kd,min,max)
     */
-    throttle_pid.pid_init(50.0, 7.5000, 2.0, 0.0, 300.0);
+    throttle_pid.pid_init(150.0, 70.000, 5.0, -50.0, 200.0);
     //////
     return odomWrapper->runLoop();
     // return lidarWrapper->runLoop();
@@ -76,7 +87,11 @@ void update()
     {
     case 1: // trajectory
         driving_rules = true;
-        // pubWrapper->throttle = constant_velocity(10);
+        
+        // pubWrapper->throttle = 200;
+        // pubWrapper->steering = 0.0;
+        // pubWrapper->throttle = constant_velocity(5);
+        
         pubWrapper->steering = ego_delta;
         steering_function(trajectory[index_waypoints][0], trajectory[index_waypoints][1]);
         pure_pursuit(trajectory[index_waypoints][0], trajectory[index_waypoints][1]);
@@ -98,14 +113,28 @@ void update()
     {
         if (odomWrapper->is_junction)
         {
+            target_vel = 5;
             pubWrapper->throttle = constant_velocity(5);
         }
         else
         {
+            target_vel = 8.5;
             pubWrapper->throttle = constant_velocity(8.5);
         }
     }
     pubWrapper->update();
+
+    /*
+    * @brief save to CSV, littlebit sloppy but ah who cares
+    */
+    auto current_time = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_time = current_time - prev_time;
+    if(elapsed_time.count()>= time_step)
+    {
+        std::time_t current_time_t = std::chrono::system_clock::to_time_t(current_time);
+        log_to_csv(odomWrapper->velocity, target_vel, crosstrack_e_, delta_, odomWrapper->angle, odomWrapper->posX, odomWrapper->posY, current_time_t);
+        prev_time = current_time;
+    }
 }
 
 void steering_function(double target_x, double target_y)
@@ -125,12 +154,12 @@ void steering_function(double target_x, double target_y)
         index_waypoints += 1;
     }
     error_angle = error_angle * M_PI / 180;
-    // ego_steer = sin(error_angle);
+    ego_steer = sin(error_angle);
     
     /*
     * @brief no need to be sin, bcs it has passed to the car_vehicle_interface first
     */
-    ego_steer = error_angle;
+    // ego_steer = error_angle;
 }
 
 double constant_velocity (double vel)
@@ -149,9 +178,9 @@ double constant_velocity (double vel)
     //     throttle_out = throttle_out;
     //     pubWrapper->brake = 0.0;
     // }
-    // throttle_pid.show_error(true);
+    throttle_pid.show_error(true);
     //last_sim_time = sim_time;
-    return std::abs(throttle_out);
+    return throttle_out;
 }
 
 
@@ -159,6 +188,7 @@ void pure_pursuit (double target_x, double target_y)
 {
     double ld_ = Kdd_ * odomWrapper ->velocity;
     double alpha_ = atan2(target_y - odomWrapper->posY, target_x - odomWrapper->posX) * 180 / M_PI - odomWrapper->angle;
+    crosstrack_e_ = sin(alpha_)*ld_;
     alpha_ = -alpha_;
     /*
     * @brief I dont know why, but in my case, the (-) error leading car to left and (+) error leading car to right
@@ -173,6 +203,28 @@ void pure_pursuit (double target_x, double target_y)
         alpha_ -= 360;
     }
 
-    double delta = atan2(2*L_*sin(alpha_* M_PI / 180), ld_);
-    ego_delta = delta;
+    delta_ = atan2(2*L_*sin(alpha_* M_PI / 180), ld_);
+    ego_delta = delta_;
+}
+
+void log_to_csv(double velocity, double reference_speed, double crosstrack_e, double delta, double yaw, double posX, double posY, double time_step)
+{
+    std::ofstream file;
+    file.open("/home/foccy/noetic_ws/src/car-simulator/vehicle_data_log.csv", std::ios::app); // Open file in append mode
+    if (file.is_open())
+    {
+        file << velocity << ","
+             << reference_speed << ","
+             << crosstrack_e << ","
+             << delta << ","
+             << yaw << ","
+             << posX << ","
+             << posY << ","
+             << time_step << "\n";
+        file.close();
+    }
+    else
+    {
+        std::cerr << "Unable to open file for writing\n";
+    }
 }

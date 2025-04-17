@@ -138,6 +138,17 @@ After setting up the environment, you can launch the simulator and run example n
    roslaunch example_node example_node.launch
    ```
 
+## Demo Video
+
+https://github.com/hifzhil/car-simulator/assets/urban_simulation.mp4
+
+This demo showcases an urban car simulation in action, featuring:
+- Vehicle spawning within the simulated environment
+- Sensor integration and real-time visualization in RViz
+- A sample navigation node to autonomously move the car through the environment
+
+
+
 ## Features
 
 - Multiple Vehicle Models: Simulator CAR offers several vehicle models, including an Urban Car and a Formula Car, each with different configurations and kinematics.

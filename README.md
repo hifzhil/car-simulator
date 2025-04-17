@@ -140,7 +140,8 @@ After setting up the environment, you can launch the simulator and run example n
 
 ## Demo Video
 
-https://github.com/hifzhil/car-simulator/blob/main/assets/urban_simulation.mp4
+[![Urban Car Simulation Demo](https://img.youtube.com/vi/5vdNronP2h8/0.jpg)](https://www.youtube.com/watch?v=5vdNronP2h8)
+
 
 This demo showcases an urban car simulation in action, featuring:
 - Vehicle spawning within the simulated environment

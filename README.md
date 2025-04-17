@@ -121,22 +121,22 @@ Now you can proceed with launching the simulator as described in the Launching t
 
 ## Launching the Simulator
 
+Make sure to source the CitySim environment before launching if you're using CitySim features:
+```bash
+source /usr/local/share/citysim-0/setup.sh
+```
+
 After setting up the environment, you can launch the simulator and run example nodes:
 
 1. Spawn the urban car in the simulation:
    ```bash
-   roslaunch car-simulator spawn_urban.launch
+   roslaunch car_simulator spawn_urban.launch enable_imu:=true enable_gps:=true enable_velodyne:=true enable_camera:=true
    ```
 
 2. Run the example control node:
    ```bash
    roslaunch example_node example_node.launch
    ```
-
-Make sure to source the CitySim environment before launching if you're using CitySim features:
-```bash
-source /usr/local/share/citysim-0/setup.sh
-```
 
 ## Features
 

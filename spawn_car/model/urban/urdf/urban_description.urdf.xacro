@@ -6,6 +6,14 @@
     <xacro:property name="gpu" value="$(arg gpu)" />
     <xacro:arg name="organize_cloud" default="false"/>
     <xacro:property name="organize_cloud" value="$(arg organize_cloud)" />
+    <xacro:arg name="enable_velodyne" default="false"/>
+    <xacro:property name="enable_velodyne" value="$(arg enable_velodyne)"/>
+    <xacro:arg name="enable_camera" default="false"/>
+    <xacro:property name="enable_camera" value="$(arg enable_camera)"/>
+    <xacro:arg name="enable_imu" default="false"/>
+    <xacro:property name="enable_imu" value="$(arg enable_imu)"/>
+    <xacro:arg name="enable_gps" default="false"/>
+    <xacro:property name="enable_gps" value="$(arg enable_gps)"/>
 
   <!-- *************** -->
     <!-- Include -->
@@ -16,6 +24,9 @@
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/camera.urdf.xacro"/>
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/vlp-16.urdf.xacro"/>
     <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/_d435.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/imu.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/urban/urdf/sensors/gps.urdf.xacro"/>
+    <xacro:include filename="$(find spawn_car)/model/urban/urdf/materials.urdf.xacro"/>
 
     <!-- *************** -->
     <!-- Robots Elements -->
@@ -26,17 +37,31 @@
     <xacro:Rear_Right_Wheel/>
     <xacro:Rear_Left_Wheel/>
 
-    <!-- <xacro:rgb_camera frlr_prefix="front" lrc_prefix="center">
-      <origin xyz="0.3 0 1.39" rpy="0 0.087 0"/>
-    </xacro:rgb_camera> -->
+    <!-- Conditional sensor loading -->
+    <xacro:if value="${enable_velodyne}">
+        <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
+            <origin xyz="0.3 0 1.30" rpy="0 0 0" />
+        </xacro:VLP-16>
+    </xacro:if>
 
-    <!-- <xacro:VLP-16 parent="chassis" name="velodyne" topic="/velodyne_points" organize_cloud="${organize_cloud}" hz="10" samples="440" gpu="${gpu}">
-      <origin xyz="0.3 0 1.30" rpy="0 0 0" />
-    </xacro:VLP-16>
+    <xacro:if value="${enable_camera}">
+        <xacro:sensor_d435 name="camera" topics_ns="camera" parent="chassis" publish_pointcloud="true">
+            <origin xyz="0.8 0 0.4" rpy="0 0 0" />
+        </xacro:sensor_d435>
+    </xacro:if>
 
-    <xacro:sensor_d435 name="camera" topics_ns="camera" parent="chassis" publish_pointcloud="true">
-      <origin xyz="0.8 0 0.4" rpy="0 0 0" />
-    </xacro:sensor_d435>   -->
+    <xacro:if value="${enable_imu}">
+        <xacro:imu_sensor parent="chassis" name="imu">
+            <origin xyz="0 0 0.5" rpy="0 0 0"/>
+        </xacro:imu_sensor>
+    </xacro:if>
+
+    <xacro:if value="${enable_gps}">
+        <xacro:gps_sensor parent="chassis" name="gps">
+            <origin xyz="0 0 0.6" rpy="0 0 0"/>
+        </xacro:gps_sensor>
+    </xacro:if>
+
 
       <gazebo>
         <plugin name="p3d" filename="libgazebo_ros_p3d.so">

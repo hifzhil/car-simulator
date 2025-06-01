@@ -1,4 +1,4 @@
-# Simulator CAR
+# CAR Simulator
 
 Welcome to Simulator CAR! This project aims to provide a comprehensive guide and resources for modeling and simulating various types of vehicles in Gazebo for autonomous algorithm development. Whether you're new to robotics or looking to dive deeper into vehicle kinematics and control, this repository is designed to be an accessible learning resource.
 

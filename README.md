@@ -190,7 +190,7 @@ roslaunch lidar_processing lidar_processing.launch
 
 ## Demo Video
 
-[![Urban Car Simulation Demo](https://img.youtube.com/vi/5vdNronP2h8/0.jpg)](https://www.youtube.com/watch?v=5vdNronP2h8)
+[![Urban Car Simulation Demo](https://img.youtube.com/vi/OoGD1tcUJLg/0.jpg)](https://youtu.be/OoGD1tcUJLg)
 
 
 This demo showcases an urban car simulation in action, featuring:

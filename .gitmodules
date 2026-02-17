@@ -7,3 +7,6 @@
 [submodule "plugins/citysim"]
 	path = plugins/citysim
 	url = https://github.com/hifzhil/citysim.git
+[submodule "plugins/lidar_processing"]
+	path = plugins/lidar_processing
+	url = https://github.com/hifzhil/lidar_processing.git

@@ -39,7 +39,7 @@ Follow these steps to set up the simulator:
 6. Initialize and update rosdep, then install dependencies:
    ```bash
    sudo rosdep init
-   rosdep update
+   rosdep update --include-eol-distros
    rosdep install --from-path src --ignore-src -y
    ```
 
@@ -71,7 +71,7 @@ To set up the CitySim environment for urban simulation:
 
 5. Generate and copy the world file:
    ```bash
-   cd worlds
+   cd ../worlds
    erb simple_city.world.erb > simple_city.world
    cp simple_city.world $HOME/noetic_ws/src/car-simulator/spawn_car/world/
    ```
@@ -132,11 +132,61 @@ After setting up the environment, you can launch the simulator and run example n
    ```bash
    roslaunch car_simulator spawn_urban.launch enable_imu:=true enable_gps:=true enable_velodyne:=true enable_camera:=true
    ```
+   The first time you launch CitySim, it may take a while to start. Please be patient, the initial load can be a bit longer, so feel free to grab a coffee while you wait.
+
+   **Note:** You may encounter the following error message when launching the simulator:
+
+   ```
+   Error [parser.cc:749] Could not find model.config or manifest.xml in [/usr/share//gazebo]
+   ```
+
+   This is a known issue and does not affect the simulation. If you see this message, you can safely ignore it.
 
 2. Run the example control node:
    ```bash
    roslaunch example_node example_node.launch
    ```
+
+## Supported Sensors
+
+The Urban Car model supports the following sensors, each enabled via launch arguments:
+
+| Sensor | Description | Launch argument | Topic(s) |
+|--------|-------------|-----------------|----------|
+| **Velodyne VLP-16** | 3D LiDAR, 16-beam | `enable_velodyne:=true` | `/velodyne_points` |
+| **Intel RealSense D435** | RGB-D camera (depth + RGB) | `enable_camera:=true` | `camera/*` |
+| **IMU** | Inertial Measurement Unit | `enable_imu:=true` | `imu/data` |
+| **GPS** | Global positioning (Hector Gazebo plugin) | `enable_gps:=true` | GPS topics |
+
+## LiDAR Processing
+
+The **lidar_processing** plugin processes the Velodyne point cloud with a filter pipeline (VoxelGrid → PassThrough → RANSAC) and publishes filtered clouds for perception and mapping. For this purpose, we are using **libpcl**.
+
+**Filters:**
+
+1. **VoxelGrid** – Downsampling by grouping nearby points into a 0.1 m leaf-size grid. Reduces density while preserving structure.
+2. **PassThrough** – Crops points along the Z-axis (e.g. keeps points in a height range) to focus on the region of interest.
+3. **RANSAC** – Plane segmentation to remove ground (or other planar surfaces), leaving obstacles and structures.
+
+**Output topics:**
+
+| Topic | Description |
+|-------|-------------|
+| `/voxelgrid_filtered` | Downsampled point cloud |
+| `/passthrough_filtered` | Height-cropped point cloud |
+| `/ransac_filtered` | Ground-removed point cloud (obstacles) |
+
+**Launch:**
+
+```bash
+roslaunch lidar_processing lidar_processing.launch
+```
+
+*VoxelGrid downsampling (left) and PassThrough + RANSAC ground removal (right):*
+
+| VoxelGrid | PassThrough + RANSAC |
+|-----------|----------------------|
+| ![VoxelGrid filter](assets/voxelgrid.png) | ![PassThrough and RANSAC filters](assets/passthrough+ransac.png) |
 
 ## Demo Video
 
@@ -165,6 +215,8 @@ This demo showcases an urban car simulation in action, featuring:
 - Vehicle Interface Plugins: Mandatory plugins are included to handle steering-to-joint trajectory conversion and throttle-to-velocity conversion, enabling various kinematic controls.
   
 - Sensor Plugins: Essential plugins for available sensors are provided to facilitate autonomous algorithm development.
+
+- LiDAR Processing: Optional pipeline (VoxelGrid, PassThrough, RANSAC) for point-cloud downsampling and ground removal; see [LiDAR Processing](#lidar-processing) above.
 
 ## Simulator Environment
 

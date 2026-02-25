@@ -156,7 +156,7 @@ The Urban Car model supports the following sensors, each enabled via launch argu
 | **Velodyne VLP-16** | 3D LiDAR, 16-beam | `enable_velodyne:=true` | `/velodyne_points` |
 | **Intel RealSense D435** | RGB-D camera (depth + RGB) | `enable_camera:=true` | `camera/*` |
 | **IMU** | Inertial Measurement Unit | `enable_imu:=true` | `imu/data` |
-| **GPS** | Global positioning (Hector Gazebo plugin) | `enable_gps:=true` | GPS topics |
+| **GPS** | Global positioning (Hector Gazebo plugin) | `enable_gps:=true` | `/fix` |
 
 ## LiDAR Processing
 

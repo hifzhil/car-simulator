@@ -9,6 +9,14 @@
       <arg name="world_name" default="$(find spawn_car)/world/example.world"/>
       <!-- <arg name="world_name" default="/home/foccy/resource/citysim/worlds/simple_city.world"/> -->
   
+      # Add sensor enable parameters
+      <arg name="enable_velodyne" default="false"/>
+      <arg name="enable_camera" default="false"/>
+      <arg name="enable_imu" default="false"/>
+      <arg name="enable_gps" default="false"/>
+      <arg name="gpu" default="false"/>
+      <arg name="organize_cloud" default="false"/>
+
       <include file="$(find gazebo_ros)/launch/empty_world.launch">
               <arg name="paused" value="$(arg paused)"/>
               <arg name="use_sim_time" value="$(arg use_sim_time)"/>
@@ -20,10 +28,14 @@
       </include>
     
       # Simulation Parameters
-      <arg    name="gpu" default="false"/>
-      <arg    name="organize_cloud" default="false"/>
       <param  name="robot_description"
-              command="$(find xacro)/xacro '$(find spawn_car)/model/formula/urdf/formula_description.urdf.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)"
+            command="$(find xacro)/xacro '$(find spawn_car)/model/formula/urdf/formula_description.urdf.xacro' 
+                  organize_cloud:=$(arg organize_cloud) 
+                  gpu:=$(arg gpu)
+                  enable_velodyne:=$(arg enable_velodyne)
+                  enable_camera:=$(arg enable_camera)
+                  enable_imu:=$(arg enable_imu)
+                  enable_gps:=$(arg enable_gps)"
       />
     
       <!-- <arg  name="model"/>
@@ -31,10 +43,10 @@
                       textfile="$(find spawn_car)/model/formula/urdf/test.urdf"
       />
  -->
-      <node   pkg="joint_state_publisher"
+      <!-- <node   pkg="joint_state_publisher"
               name="joint_state_publisher"
               type="joint_state_publisher"
-      />
+      /> -->
 
       <node   pkg="robot_state_publisher"
               name="robot_state_publisher"
@@ -75,6 +87,7 @@
               name="standalone_nodelet"  
               args="manager" 
               output="screen"
+              required="true"
       />
 
       <node   pkg="nodelet" 
@@ -84,11 +97,14 @@
               output="screen">
       </node>
       
-      <!-- <node   pkg="rviz"
-              name="rviz"
-              type="rviz"
-              args = "-d $(find spawn_car)/rviz/formula.rviz"
-      /> -->
+      <node   pkg="rviz"
+            name="rviz"
+            type="rviz"
+            args = "-d $(find spawn_car)/rviz/formula.rviz">
+            <param name="wait_for_topic" value="/formula_model/joint_states"/>
+            <param name="wait_for_topic" value="/tf"/>
+      </node>
+
 
 
 </launch>  

@@ -10,3 +10,6 @@
 [submodule "plugins/lidar_processing"]
 	path = plugins/lidar_processing
 	url = https://github.com/hifzhil/lidar_processing.git
+[submodule "plugins/lidar_mapping"]
+	path = plugins/lidar_mapping
+	url = https://github.com/hifzhil/lidar_mapping

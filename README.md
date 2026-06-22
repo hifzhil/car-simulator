@@ -15,8 +15,10 @@ Follow these steps to set up the simulator:
    sudo apt install python3-rosdep
    ```
 
-2. Navigate to the project directory:
+2. Create the project directory:
    ```bash
+   mkdir -p $HOME/noetic_ws/src/ && cd $HOME/noetic_ws/src/
+   git clone https://github.com/hifzhil/car-simulator.git
    cd $HOME/noetic_ws/src/car-simulator
    ```
 
